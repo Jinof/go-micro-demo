@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package greeter;
+
+service User {
+  rpc Call(CallRequest) returns (CallResponse) {}
+}
+
+message CallRequest {
+  string name = 1;
+}
+
+message CallResponse {
+  string message = 1;
+}
