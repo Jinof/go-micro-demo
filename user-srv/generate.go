@@ -1,3 +1,3 @@
-package srv
+package main
 
 //go:generate make proto
