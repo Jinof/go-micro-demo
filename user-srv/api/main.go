@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/Jinof/go-micro-demo/gateway/proto/greeter"
+	"github.com/Jinof/go-micro-demo/user-srv/api/proto/greeter"
 	"github.com/Jinof/go-micro-demo/user-srv/proto/user"
 	"github.com/micro/go-micro/v2"
 	"github.com/micro/go-micro/v2/api"
@@ -36,6 +36,7 @@ func (g *User) Call(ctx context.Context, req *greeter.CallRequest, res *greeter.
 }
 
 func main() {
+
 	service := micro.NewService(
 		micro.Name("go.micro.api.example"),
 	)
