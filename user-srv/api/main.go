@@ -47,6 +47,8 @@ func main() {
 		// The Rpc Method
 		Name: "User.Call",
 		// The HTTP paths. This can be a POSIX regex
+		// Please check the url below before you assign the Path.
+		// https://github.com/micro-in-cn/tutorials/tree/master/examples/micro-api
 		Path: []string{"/user/call"},
 		// The HTTP Methods for this endpoint.
 		Method: []string{"POST", "GET"},
