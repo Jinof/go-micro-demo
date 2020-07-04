@@ -4,20 +4,24 @@
 
 # Usage
 
-Run the Micro Api
+Run the Custom gateway
 
-    micro api
+    make run_gateway secret="Your secret"
     
 Run the user-srv
 
-    go run user-srv/main.go user-srv/plugin.go
+    make run_srv
     
-Run the gateway
+Run the api layer
  
-    go run gateway/main.go
+    make run_api
     
 # Call the service
 
-    curl -H 'Content-Type: application/json' -d '{"name": "John"}' http://localhost:8080/user/call
+    curl -H 'Content-Type: application/json' -H 'Authorization: passport Token' -d '{"name": "John"}' http://localhost:8080/user/call
 
-    {"message": "Hello John"}
+    {
+        "status": 0,
+        "message": "成功调用User.Call",
+        "data": "Hello johnaa"
+    }

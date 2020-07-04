@@ -8,4 +8,4 @@ run_api:
 
 .PHONY: run_gateway
 run_gateway:
-	go run gateway/main.go api  --secret="Your Secret"
+	go run gateway/main.go api --secret=$(secret)
