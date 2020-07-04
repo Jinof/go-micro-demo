@@ -3,11 +3,12 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/Jinof/go-micro-demo/user-srv/api/proto/greeter"
-	"github.com/Jinof/go-micro-demo/user-srv/proto/user"
+	user "github.com/Jinof/go-micro-demo/user-srv/api/genproto/api"
+	srv "github.com/Jinof/go-micro-demo/user-srv/api/genproto/srv"
 	"github.com/micro/go-micro/v2"
-	"github.com/micro/go-micro/v2/api"
-	"github.com/micro/go-micro/v2/api/handler/rpc"
+	mApi "github.com/micro/go-micro/v2/api"
+	hApi "github.com/micro/go-micro/v2/api/handler/api"
+	api "github.com/micro/go-micro/v2/api/proto"
 	"github.com/micro/go-micro/v2/client"
 	merr "github.com/micro/go-micro/v2/errors"
 	"log"
@@ -17,12 +18,16 @@ type User struct {
 	Client client.Client
 }
 
-// Example.User is a method will be served by http request /example/user
-func (g *User) Call(ctx context.Context, req *greeter.CallRequest, res *greeter.CallResponse) error {
-	log.Println("Received " + req.Name)
+// Example.User is a method will be served by http request /example/srv
+func (g *User) Call(ctx context.Context, req *api.Request, res *api.Response) error {
+	usernamePair, ok := req.Header["Username"]
+	if !ok {
+		log.Println("err: cannot get username in header")
+	}
+	fmt.Println(usernamePair.Values)
 
-	userClient := user.NewUserService("go.micro.service.user", g.Client)
-	rsp, err := userClient.Call(ctx, &user.Request{Name: req.Name})
+	userClient := srv.NewUserService("go.micro.service.srv", g.Client)
+	rsp, err := userClient.Call(ctx, &srv.Request{Name: fmt.Sprint(usernamePair.Values)})
 	if err != nil {
 		return merr.InternalServerError("api.greeter.call", err.Error())
 	}
@@ -30,7 +35,7 @@ func (g *User) Call(ctx context.Context, req *greeter.CallRequest, res *greeter.
 	fmt.Println(res)
 	fmt.Println(rsp)
 
-	res.Message = rsp.Msg
+	res.Body = rsp.Msg
 
 	return nil
 }
@@ -43,7 +48,7 @@ func main() {
 
 	service.Init()
 
-	greeter.RegisterUserHandler(service.Server(), &User{Client: service.Client()}, api.WithEndpoint(&api.Endpoint{
+	user.RegisterUserHandler(service.Server(), &User{Client: service.Client()}, mApi.WithEndpoint(&mApi.Endpoint{
 		// The Rpc Method
 		Name: "User.Call",
 		// The HTTP paths. This can be a POSIX regex
@@ -53,7 +58,7 @@ func main() {
 		// The HTTP Methods for this endpoint.
 		Method: []string{"POST", "GET"},
 		// The API handler to use
-		Handler: rpc.Handler,
+		Handler: hApi.Handler,
 	}))
 
 	if err := service.Run(); err != nil {

@@ -1,9 +1,10 @@
 syntax = "proto3";
 
 package greeter;
+import "github.com/micro/go-micro/api/proto/api.proto";
 
 service User {
-  rpc Call(CallRequest) returns (CallResponse) {}
+  rpc Call(go.api.Request) returns (go.api.Response) {}
 }
 
 message CallRequest {

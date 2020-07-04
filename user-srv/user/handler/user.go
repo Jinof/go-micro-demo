@@ -2,7 +2,7 @@ package handler
 
 import (
 	"context"
-	"github.com/Jinof/go-micro-demo/user-srv/proto/user"
+	user "github.com/Jinof/go-micro-demo/user-srv/user/genproto/srv"
 
 	log "github.com/micro/go-micro/v2/logger"
 )
