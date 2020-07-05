@@ -33,7 +33,17 @@ func (l *login) Commands() []*cli.Command {
 
 func (l *login) Handler() plugin.Handler {
 	return func(h http.Handler) http.Handler {
-		return l.LoginHandler(h)
+		return l.Router(h)
+	}
+}
+
+func (l *login) Router(h http.Handler) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Query().Get("login") != "" {
+			l.LoginHandler(h)
+			return
+		}
+		h.ServeHTTP(w, r)
 	}
 }
 
