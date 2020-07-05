@@ -13,18 +13,12 @@ import (
 	"github.com/micro/micro/v2/plugin"
 )
 
-type auth struct {
-	prefix []string
+type login struct {
 	secret string
 }
 
-func (a *auth) Flags() []cli.Flag {
+func (l *login) Flags() []cli.Flag {
 	return []cli.Flag{
-		&cli.StringFlag{
-			Name:    "path_prefix",
-			Usage:   "Comma separated list of path prefixes to strip before continuing with request e.g /api,/foo,/bar",
-			EnvVars: []string{"PATH_PREFIX"},
-		},
 		&cli.StringFlag{
 			Name:    "secret",
 			Usage:   "Token secret e.g `mySecret`",
@@ -33,36 +27,21 @@ func (a *auth) Flags() []cli.Flag {
 	}
 }
 
-func (a *auth) Commands() []*cli.Command {
+func (l *login) Commands() []*cli.Command {
 	return nil
 }
 
-func (a *auth) Handler() plugin.Handler {
+func (l *login) Handler() plugin.Handler {
 	return func(h http.Handler) http.Handler {
-		return a.PrefixHandler(a.LoginHandler(h))
-	}
-}
-
-func (a *auth) PrefixHandler(h http.Handler) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		// strip auth if we have a match
-		for _, prefix := range a.prefix {
-			if strings.HasPrefix(r.URL.Path, prefix) {
-				r.URL.Path = strings.TrimPrefix(r.URL.Path, prefix)
-				break
-			}
-		}
-
-		// serve request
-		h.ServeHTTP(w, r)
+		return l.LoginHandler(h)
 	}
 }
 
 // LoginHandler checkout token and get username.
-func (a *auth) LoginHandler(h http.Handler) http.HandlerFunc {
+func (l *login) LoginHandler(h http.Handler) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		token := r.Header.Get("authorization")
-		username, err := a.ParesToken(token)
+		username, err := l.ParesToken(token)
 		if err != nil {
 			w.WriteHeader(http.StatusForbidden)
 			encoder := json.NewEncoder(w)
@@ -82,8 +61,8 @@ func (a *auth) LoginHandler(h http.Handler) http.HandlerFunc {
 }
 
 // ParesToken xh是学号\学工号
-func (a *auth) ParesToken(tokenString string) (int, error) {
-	secretKey := []byte(a.secret)
+func (l *login) ParesToken(tokenString string) (int, error) {
+	secretKey := []byte(l.secret)
 	kv := strings.SplitAfter(tokenString, " ")
 	if len(kv) < 2 {
 		return 0, errors.New("403 Forbidden")
@@ -109,19 +88,16 @@ func (a *auth) ParesToken(tokenString string) (int, error) {
 	}
 }
 
-func (a *auth) Init(ctx *cli.Context) error {
-	if prefix := ctx.String("path_prefix"); len(prefix) > 0 {
-		a.prefix = append(a.prefix, strings.Split(prefix, ",")...)
-	}
+func (l *login) Init(ctx *cli.Context) error {
 	secret := ctx.String("secret")
-	a.secret = secret
+	l.secret = secret
 	return nil
 }
 
-func (a *auth) String() string {
-	return "auth"
+func (l *login) String() string {
+	return "login"
 }
 
 func NewPlugin() plugin.Plugin {
-	return &auth{}
+	return &login{}
 }
