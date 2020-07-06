@@ -1,22 +1,22 @@
 package main
 
 import (
-	"github.com/Jinof/go-micro-demo/user-srv/api/handler"
-	"github.com/micro/go-micro/v2"
-	"log"
+    "github.com/Jinof/go-micro-demo/user-srv/api/handler"
+    "github.com/micro/go-micro/v2"
+    "log"
 )
 
 func main() {
 
-	service := micro.NewService(
-		micro.Name("go.micro.api.example"),
-	)
+    service := micro.NewService(
+        micro.Name("go.micro.api.example"),
+    )
 
-	service.Init()
+    service.Init()
 
-	handler.RegisterHandler(service)
+    handler.RegisterHandler(service)
 
-	if err := service.Run(); err != nil {
-		log.Fatal(err)
-	}
+    if err := service.Run(); err != nil {
+        log.Fatal(err)
+    }
 }
