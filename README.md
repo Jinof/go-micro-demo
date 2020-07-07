@@ -1,11 +1,28 @@
 # go-micro-demo
 
-该 demo 展示如何通过 api 调用 grpc server
+架构
+    
+    req -> gateway -> api -> srv
+
+srv为rpc服务, 通过api层抽象出接口, 再用gateway转发请求.    
+
+优点:
+1. gateway 实际为 micro api, 具有micro原生的服务发现的能力, 可自行调用 api.
+1. 服务扩展时只需拓展api和srv层, gateway无需更改.
+    
+gateway的auth通过api plugin实现, 并使用了 casbin 做鉴权.
+由于micro.Auth还未完成,所以只能自己写auth.
+注意: 
+    
+    Header中的Authorization必须被重写为 'Authorization: Bearer xxx' 的形式.
+    看micro初始化时的源码, 你可以看到micro.Auth会被使用,它要求Authorization必须
+    为以上形式, xxx 可以为任何值, 因为不起作用(当micro.Auth完成后推荐使用它, 不用
+    自己写token相关逻辑了😀).
 
 # Usage
 
 Run the Custom gateway
-
+ 
     make run_gateway secret="Your secret"
     
 Run the user-srv
