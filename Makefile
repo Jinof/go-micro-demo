@@ -8,4 +8,8 @@ run_api:
 
 .PHONY: run_gateway
 run_gateway:
-	cd gateway && go run main.go api --secret=$(secret)
+	cd gateway && go run main.go --auth_namespace=${namespace} api --secret=$(secret) --namespace=${namespace}
+
+.PHONY: build
+build_gateway:
+	cd gateway && make build
