@@ -7,11 +7,10 @@ import (
 	"github.com/casbin/casbin/v2"
 	"github.com/casbin/xorm-adapter/v2"
 	"github.com/dgrijalva/jwt-go"
+	"github.com/dgrijalva/jwt-go/request"
 	_ "github.com/go-sql-driver/mysql"
 	"math/rand"
 	"net/http"
-	"strconv"
-	"strings"
 	"time"
 
 	"github.com/micro/cli/v2"
@@ -76,9 +75,17 @@ func (a *Auth) LoginHandler(h http.Handler) http.HandlerFunc {
 			h.ServeHTTP(w, r)
 			return
 		}
-		token := r.Header.Get("authorization")
-		fmt.Println(token)
-		username, err := a.ParesToken(token)
+		token, err := request.ParseFromRequest(
+			r,
+			request.AuthorizationHeaderExtractor,
+			func(t *jwt.Token) (interface{}, error) {
+				if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
+					return nil, jwt.ErrSignatureInvalid
+				}
+				return []byte(a.secret), nil
+			},
+			request.WithClaims(jwt.MapClaims{}),
+		)
 		if err != nil {
 			w.WriteHeader(http.StatusForbidden)
 			encoder := json.NewEncoder(w)
@@ -90,6 +97,9 @@ func (a *Auth) LoginHandler(h http.Handler) http.HandlerFunc {
 			}
 			return
 		}
+
+		a.HeaderSetUsername(r, token.Claims)
+
 		// 随机生成角色
 		// 真实场景下可以从token种取role
 		// role := GetRoleFromToken(token)
@@ -108,38 +118,14 @@ func (a *Auth) LoginHandler(h http.Handler) http.HandlerFunc {
 			return
 		}
 
-		r.Header.Set("username", strconv.Itoa(username))
-		r.Header.Set("authorization", "Bearer "+token)
 		h.ServeHTTP(w, r)
 	}
 }
 
-// ParesToken xh是学号\学工号
-func (a *Auth) ParesToken(tokenString string) (int, error) {
-	secretKey := []byte(a.secret)
-	kv := strings.SplitAfter(tokenString, " ")
-	if len(kv) < 2 {
-		return 0, errors.New("403 Forbidden")
-	}
-	token, err := jwt.Parse(kv[1], func(token *jwt.Token) (interface{}, error) {
-		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("Unexpected siging method %v ", token.Header["alg"])
-		}
-		return secretKey, nil
-	})
-	if err != nil {
-		return 0, err
-	}
-	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		xh := claims["xh"].(string)
-		userId, err := strconv.Atoi(xh)
-		if err != nil {
-			return 0, err
-		}
-		return userId, nil
-	} else {
-		return 0, err
-	}
+// HeaderSetUsername
+func (a *Auth) HeaderSetUsername(r *http.Request, claims jwt.Claims) {
+	c := claims.(jwt.MapClaims)
+	r.Header.Set("Username", c["xh"].(string))
 }
 
 func (a *Auth) Init(ctx *cli.Context) error {
