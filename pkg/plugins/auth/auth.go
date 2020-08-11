@@ -24,6 +24,7 @@ type Auth struct {
 	model        string
 	adapter      string
 	mysqlAdapter string
+	casbinSkip   bool
 }
 
 func (a *Auth) Flags() []cli.Flag {
@@ -32,6 +33,11 @@ func (a *Auth) Flags() []cli.Flag {
 			Name:    "secret",
 			Usage:   "Token secret e.g `mySecret`",
 			EnvVars: []string{"SECRET"},
+		},
+		&cli.BoolFlag{
+			Name:  "casbin_init_skip",
+			Usage: "Casbin init skip func e.g `true/false`",
+			Value: false,
 		},
 		&cli.StringFlag{
 			Name:  "casbin_model",
@@ -100,6 +106,11 @@ func (a *Auth) LoginHandler(h http.Handler) http.HandlerFunc {
 
 		a.HeaderSetUsername(r, token.Claims)
 
+		if a.casbinSkip {
+			h.ServeHTTP(w, r)
+			return
+		}
+
 		// 随机生成角色
 		// 真实场景下可以从token种取role
 		// role := GetRoleFromToken(token)
@@ -130,11 +141,16 @@ func (a *Auth) HeaderSetUsername(r *http.Request, claims jwt.Claims) {
 
 func (a *Auth) Init(ctx *cli.Context) error {
 	a.secret = ctx.String("secret")
+
+	a.casbinSkip = ctx.Bool("casbin_init_skip")
 	a.model = ctx.String("casbin_model")
 	a.adapter = ctx.String("casbin_file_adapter")
 	a.useMysql = ctx.Bool("casbin_adapter_use_mysql")
 	a.mysqlAdapter = ctx.String("casbin_adapter_mysql")
 
+	if a.casbinSkip {
+		return nil
+	}
 	var ef *casbin.Enforcer
 	var err error
 	if a.useMysql {
