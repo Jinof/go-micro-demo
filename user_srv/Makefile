@@ -22,7 +22,7 @@ proto:
 
 .PHONY: build
 build: proto
-	go build -o user-service *.go
+	go build -o user-service ./api/*.go
 
 .PHONY: test
 test:
