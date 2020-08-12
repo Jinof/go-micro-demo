@@ -1,15 +1,20 @@
-.PHONY: run_srv
+
 run_srv:
-	go run user-srv/user/main.go
+	go run user/user/main.go
 
-.PHONY: run_api
 run_api:
-	go run user-srv/api/main.go
+	go run user/api/main.go
 
-.PHONY: run_gateway
 run_gateway:
-	cd gateway && go run main.go --auth_namespace=${namespace} api --secret=$(secret) --namespace=${namespace}
+	cd gateway && make run_without_casbin namespace=$(namespace) secret=$(secret)
 
-.PHONY: build
+run_gateway_without_casbin:
+	cd gateway && make run_without_casbin namespace=$(namespace) secret=$(secret)
+
 build_gateway:
 	cd gateway && make build
+
+build_user_srv:
+	cd user_srv && make build
+
+.PHONY: run_srv run_api run_gateway run_gateway_without_casbin build_gateway build_user_srv
