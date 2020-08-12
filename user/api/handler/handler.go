@@ -1,7 +1,7 @@
 package handler
 
 import (
-	user "github.com/Jinof/go-micro-demo/user_srv/api/genproto/api"
+	user "github.com/Jinof/go-micro-demo/user/api/genproto/api"
 	"github.com/micro/go-micro/v2"
 	mApi "github.com/micro/go-micro/v2/api"
 	hApi "github.com/micro/go-micro/v2/api/handler/api"
