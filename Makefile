@@ -14,7 +14,4 @@ run_gateway_without_casbin:
 build_gateway:
 	cd gateway && make build
 
-build_user_srv:
-	cd user_srv && make build
-
-.PHONY: run_srv run_api run_gateway run_gateway_without_casbin build_gateway build_user_srv
+.PHONY: run_srv run_api run_gateway run_gateway_without_casbin build_gateway
