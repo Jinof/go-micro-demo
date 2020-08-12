@@ -14,4 +14,21 @@ push:
 	docker push $(IMAGE_NAME):$(IMAGE_TAG)
 	docker push $(IMAGE_NAME):latest
 
-.PHONY: build docker push
+run:
+	cd gateway
+	go run ./*.go \
+	--auth_namespace=${namespace} \
+	api \
+	--secret=$(secret) \
+	--namespace=${namespace}
+
+run_without_casbin:
+	go run ./*.go \
+	--auth_namespace=${namespace} \
+	api \
+	--secret=$(secret) \
+	--namespace=${namespace} \
+	--casbin_init_skip=true
+
+
+.PHONY: build docker push run run_without_casbin
