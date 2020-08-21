@@ -15,7 +15,6 @@ push:
 	docker push $(IMAGE_NAME):latest
 
 run:
-	cd gateway
 	go run ./*.go \
 	--auth_namespace=${namespace} \
 	api \
