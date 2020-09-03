@@ -3,20 +3,17 @@ GOPATH:=$(shell go env GOPATH)
 MODIFY=Mgithub.com/micro/go-micro/api/proto/api.proto=github.com/micro/go-micro/v2/api/proto
 
 PB_PATH=./pb
-GEN_PATH=github.com/go-micro-demo/user-srv/${gen}
 
 .PHONY: proto
 proto:
 	rm -rf ${gen}/*.proto
 	protoc --proto_path=${GOPATH}/src:${PB_PATH} \
-	--micro_out=Msrv/greeter.proto=${GEN_PATH}/srv,Mgithub.com/micro/go-micro/api/proto/api.proto=github.com/micro/go-micro/v2/api/proto:${gen} \
-	--go_out=Msrv/greeter.proto=${GEN_PATH}/srv,Mgithub.com/micro/go-micro/api/proto/api.proto=github.com/micro/go-micro/v2/api/proto:${gen} \
-	--validate_out="lang=go:${gen}" \
+	--micro_out=${MODIFY}:genproto \
+	--go_out=${MODIFY}:genproto \
 	api/user.proto
 	protoc --proto_path=${GOPATH}/src:${PB_PATH} \
-	--micro_out=${gen} \
-	--go_out=:${gen} \
-	--validate_out="lang=go:${gen}" \
+	--micro_out=${MODIFY}:genproto \
+	--go_out=${MODIFY}:genproto \
 	srv/user.proto
     
 

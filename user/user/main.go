@@ -1,7 +1,7 @@
 package main
 
 import (
-	srv "github.com/Jinof/go-micro-demo/user/user/genproto/srv"
+	srv "github.com/Jinof/go-micro-demo/user/genproto/srv"
 	"github.com/Jinof/go-micro-demo/user/user/handler"
 	"github.com/micro/go-micro/v2"
 	log "github.com/micro/go-micro/v2/logger"
