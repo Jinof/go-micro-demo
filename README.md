@@ -30,7 +30,7 @@ gateway的auth通过api plugin实现, 并使用了 casbin 做鉴权.
 
 Run the Custom gateway
  
-    make run_gateway secret="Your secret"
+    make run_gateway secret="go-micro-demo"
     
 Run the user-srv
 
@@ -42,10 +42,7 @@ Run the api layer
     
 # Call the service
 
-    curl -H 'Content-Type: application/json' -H 'Authorization: passport Token' -d '{"name": "John"}' http://localhost:8080/user/call
+    // curl -H 'Content-Type: application/json' -H 'Authorization: Bearer Token' -d '{"name": "John"}' http://localhost:8080/user/call
+    curl -H 'Content-Type: application/json' -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjMxOTAwOTIzMzYsImlhdCI6MTU5OTE5NDM1OCwidXNlcm5hbWUiOiJqaW5vZiJ9.q8uPpN_lLzPP2r6Mr8a1QUf1U-CmrGHmPjah2UMhof4' -d '{"name": "John"}' http://localhost:8080/user/call
 
-    {
-        "status": 0,
-        "message": "成功调用User.Call",
-        "data": "Hello johnaa"
-    }
+    {"status":0,"message":"成功调用User.Call","data":"Hello jinof your data has been received"}
