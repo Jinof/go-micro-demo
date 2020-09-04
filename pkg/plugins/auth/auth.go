@@ -136,7 +136,7 @@ func (a *Auth) LoginHandler(h http.Handler) http.HandlerFunc {
 // HeaderSetUsername
 func (a *Auth) HeaderSetUsername(r *http.Request, claims jwt.Claims) {
 	c := claims.(jwt.MapClaims)
-	r.Header.Set("Username", c["xh"].(string))
+	r.Header.Set("Username", c["username"].(string))
 }
 
 func (a *Auth) Init(ctx *cli.Context) error {

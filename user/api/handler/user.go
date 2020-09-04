@@ -2,6 +2,9 @@ package handler
 
 import (
 	"context"
+	"encoding/json"
+	srv "github.com/Jinof/go-micro-demo/user/genproto/srv"
+
 	// "encoding/json"
 	"fmt"
 	// srv "github.com/Jinof/go-micro-demo/user-srv/user/genproto/srv"
@@ -24,18 +27,17 @@ func (g *User) Call(ctx context.Context, req *api.Request, res *api.Response) er
 	}
 	fmt.Println(usernamePair.Values)
 
-	// data := new(struct {
-	//     Name string
-	// })
-	// err := json.Unmarshal([]byte(req.Body), &data)
-	// userClient := srv.NewUserService("go.micro.service.srv", g.Client)
-	// rsp, err := userClient.Call(ctx, &srv.Request{Name: data.Name})
-	// if err != nil {
-	//     return merr.InternalServerError("api.greeter.call", err.Error())
-	// }
+	data := new(struct {
+		Name string
+	})
+	err := json.Unmarshal([]byte(req.Body), &data)
+	userClient := srv.NewUserService("go.micro.service.srv", g.Client)
+	rsp, err := userClient.Call(ctx, &srv.Request{Name: data.Name})
+	if err != nil {
+		return merr.InternalServerError("api.greeter.call", err.Error())
+	}
 
-	fmt.Println(res)
-	// fmt.Println(rsp)
+	fmt.Println("From grpc", rsp)
 
 	b, err := ResponseBody(0, "成功调用User.Call", "1")
 	if err != nil {
