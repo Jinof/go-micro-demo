@@ -25,21 +25,21 @@ func (g *User) Call(ctx context.Context, req *api.Request, res *api.Response) er
 	if !ok {
 		log.Println("err: cannot get username in header")
 	}
-	fmt.Println(usernamePair.Values)
+	fmt.Printf("user %s send a call \n", usernamePair.Values)
 
 	data := new(struct {
 		Name string
 	})
 	err := json.Unmarshal([]byte(req.Body), &data)
 	userClient := srv.NewUserService("go.micro.service.srv", g.Client)
-	rsp, err := userClient.Call(ctx, &srv.Request{Name: data.Name})
+	rsp, err := userClient.Call(ctx, &srv.Request{Name: usernamePair.Values[0]})
 	if err != nil {
 		return merr.InternalServerError("api.greeter.call", err.Error())
 	}
 
 	fmt.Println("From grpc", rsp)
 
-	b, err := ResponseBody(0, "成功调用User.Call", "1")
+	b, err := ResponseBody(0, "成功调用User.Call", rsp.Msg)
 	if err != nil {
 		return merr.InternalServerError("api.greeter.call", err.Error())
 	}
