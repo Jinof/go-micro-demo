@@ -14,6 +14,7 @@ message Message {
 
 message Request {
   string name = 1;
+  string data = 2;
 }
 
 message Response {

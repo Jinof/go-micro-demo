@@ -28,11 +28,11 @@ func (g *User) Call(ctx context.Context, req *api.Request, res *api.Response) er
 	fmt.Printf("user %s send a call \n", usernamePair.Values)
 
 	data := new(struct {
-		Name string
+		Data string `json:"data"`
 	})
 	err := json.Unmarshal([]byte(req.Body), &data)
 	userClient := srv.NewUserService("go.micro.service.srv", g.Client)
-	rsp, err := userClient.Call(ctx, &srv.Request{Name: usernamePair.Values[0]})
+	rsp, err := userClient.Call(ctx, &srv.Request{Name: usernamePair.Values[0], Data: data.Data})
 	if err != nil {
 		return merr.InternalServerError("api.greeter.call", err.Error())
 	}

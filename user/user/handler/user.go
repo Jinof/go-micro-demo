@@ -2,6 +2,7 @@ package handler
 
 import (
 	"context"
+	"fmt"
 	user "github.com/Jinof/go-micro-demo/user/genproto/srv"
 
 	log "github.com/micro/go-micro/v2/logger"
@@ -12,7 +13,8 @@ type User struct{}
 // Call is a single request handler called via client.Call or the generated client code
 func (e *User) Call(ctx context.Context, req *user.Request, rsp *user.Response) error {
 	log.Info("Received User.Call request")
-	rsp.Msg = "Hello " + req.Name
+	fmt.Printf("received data: %s from user: %s", req.Data, req.Name)
+	rsp.Msg = "Hello " + req.Name + " your data has been received"
 	return nil
 }
 
