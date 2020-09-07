@@ -57,9 +57,16 @@ func (g *User) Hello(ctx context.Context, req *api.Request, res *api.Response) e
 	}
 	username := usernamePair.Values[0]
 
-	var err error
+	// call service
+	userClient := srv.NewUserService("go.micro.service.srv", g.Client)
+	rsp, err := userClient.Hello(context.Background(), &srv.HelloReq{})
+	if err != nil {
+		return err
+	}
+
 	res.Body, err = ResponseBody(0, "成功调用", map[string]interface{}{
-		"data": fmt.Sprintf("hello %s", username),
+		"msg":  rsp.Msg,
+		"name": username,
 	})
 	if err != nil {
 		return err
