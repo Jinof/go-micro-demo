@@ -47,3 +47,10 @@ func (e *User) PingPong(ctx context.Context, stream user.User_PingPongStream) er
 		}
 	}
 }
+
+// Hello is a bidirectional stream handler called via client.Stream or the generated client code
+func (e *User) Hello(ctx context.Context, req *user.HelloReq, rsp *user.HelloRes) error {
+	log.Info("Received User.Hello request")
+	rsp.Msg = "hello from service hello"
+	return nil
+}

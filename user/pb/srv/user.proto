@@ -6,6 +6,15 @@ service User {
   rpc Call(Request) returns (Response) {}
   rpc Stream(StreamingRequest) returns (stream StreamingResponse) {}
   rpc PingPong(stream Ping) returns (stream Pong) {}
+  rpc Hello(HelloReq) returns (HelloRes) {}
+}
+
+message HelloReq {
+
+}
+
+message HelloRes {
+  string msg = 1;
 }
 
 message Message {

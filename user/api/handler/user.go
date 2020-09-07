@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	srv "github.com/Jinof/go-micro-demo/user/genproto/srv"
 
 	// "encoding/json"
@@ -45,6 +46,31 @@ func (g *User) Call(ctx context.Context, req *api.Request, res *api.Response) er
 	}
 
 	res.Body = b
+
+	return nil
+}
+
+func (g *User) Hello(ctx context.Context, req *api.Request, res *api.Response) error {
+	usernamePair, ok := req.Header["Username"]
+	if !ok {
+		return errors.New("bad auth")
+	}
+	username := usernamePair.Values[0]
+
+	// call service
+	userClient := srv.NewUserService("go.micro.service.srv", g.Client)
+	rsp, err := userClient.Hello(context.Background(), &srv.HelloReq{})
+	if err != nil {
+		return err
+	}
+
+	res.Body, err = ResponseBody(0, "成功调用", map[string]interface{}{
+		"msg":  rsp.Msg,
+		"name": username,
+	})
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
