@@ -1,9 +1,9 @@
 
 run_srv:
-	go run user/user/main.go
+	go run user/cmd/api/main.go
 
 run_api:
-	go run user/api/main.go
+	go run user/cmd/srv/main.go
 
 run_gateway:
 	cd gateway && make run_without_casbin namespace=$(namespace) secret=$(secret)
