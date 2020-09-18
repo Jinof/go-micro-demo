@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/Jinof/go-micro-demo/user/api/handler"
+	"github.com/Jinof/go-micro-demo/user/internal/api/handler"
 	"github.com/micro/go-micro/v2"
 	"log"
 )

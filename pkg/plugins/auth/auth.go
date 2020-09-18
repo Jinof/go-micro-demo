@@ -173,7 +173,7 @@ func (a *Auth) Init(ctx *cli.Context) error {
 		panic(err)
 	}
 	a.enforcer.EnableAutoSave(true)
-	ok, err := a.enforcer.AddPolicy("public", "/user/call", "GET")
+	ok, err := a.enforcer.AddPolicy("public", "/internal/call", "GET")
 	if err != nil {
 		panic(err)
 	}

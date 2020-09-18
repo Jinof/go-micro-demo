@@ -8,7 +8,7 @@ import (
 
 	// "encoding/json"
 	"fmt"
-	// srv "github.com/Jinof/go-micro-demo/user-srv/user/genproto/srv"
+	// srv "github.com/Jinof/go-micro-demo/internal-srv/internal/genproto/srv"
 	api "github.com/micro/go-micro/v2/api/proto"
 	"github.com/micro/go-micro/v2/client"
 	merr "github.com/micro/go-micro/v2/errors"
@@ -26,7 +26,7 @@ func (g *User) Call(ctx context.Context, req *api.Request, res *api.Response) er
 	if !ok {
 		log.Println("err: cannot get username in header")
 	}
-	fmt.Printf("user %s send a call \n", usernamePair.Values)
+	fmt.Printf("internal %s send a call \n", usernamePair.Values)
 
 	data := new(struct {
 		Data string `json:"data"`
