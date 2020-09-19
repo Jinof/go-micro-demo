@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	user "github.com/Jinof/go-micro-demo/user/genproto/srv"
-
 	log "github.com/micro/go-micro/v2/logger"
 )
 

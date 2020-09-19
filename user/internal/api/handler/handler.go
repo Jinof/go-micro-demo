@@ -39,5 +39,11 @@ func registerUser(service micro.Service) error {
 			Method: []string{"POST", "GET"},
 			// The API handler to use
 			Handler: hApi.Handler,
+		}),
+		mApi.WithEndpoint(&mApi.Endpoint{
+			Name:    "User.Pub",
+			Path:    []string{"/api/user/pub"},
+			Method:  []string{"POST", "GET"},
+			Handler: hApi.Handler,
 		}))
 }

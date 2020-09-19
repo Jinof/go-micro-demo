@@ -5,11 +5,13 @@ import (
 	"encoding/json"
 	"errors"
 	srv "github.com/Jinof/go-micro-demo/user/genproto/srv"
+	"github.com/micro/go-micro/v2/logger"
+	"time"
 
-	// "encoding/json"
 	"fmt"
-	// srv "github.com/Jinof/go-micro-demo/internal-srv/internal/genproto/srv"
+	"github.com/Jinof/go-micro-demo/user/pkg/pubsub"
 	api "github.com/micro/go-micro/v2/api/proto"
+	"github.com/micro/go-micro/v2/broker"
 	"github.com/micro/go-micro/v2/client"
 	merr "github.com/micro/go-micro/v2/errors"
 	"log"
@@ -70,6 +72,30 @@ func (g *User) Hello(ctx context.Context, req *api.Request, res *api.Response) e
 	})
 	if err != nil {
 		return err
+	}
+
+	return nil
+}
+
+func (g *User) Pub(ctx context.Context, req *api.Request, res *api.Response) error {
+	usernamePair, ok := req.Header["Username"]
+	if !ok {
+		return errors.New("bad auth")
+	}
+	username := usernamePair.Values[0]
+	id := time.Now().UnixNano()
+
+	msg := &broker.Message{
+		Header: map[string]string{
+			"id": fmt.Sprintf("#{%d}", id),
+		},
+		Body: []byte(fmt.Sprintf("${%d}: received a message from %s", id, username)),
+	}
+	logger.Info(broker.String())
+	if err := broker.Publish(pubsub.Topic, msg); err != nil {
+		logger.Info("[pub] message publish failed: %v", err)
+	} else {
+		fmt.Println("[pub] message publish success: ", string(msg.Body))
 	}
 
 	return nil
