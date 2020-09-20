@@ -15,7 +15,10 @@ proto:
 	--micro_out=${MODIFY}:genproto \
 	--go_out=${MODIFY}:genproto \
 	srv/user.proto
-    
+	protoc --proto_path=${PB_PATH} \
+	--micro_out=${MODIFY}:genproto \
+	--go_out=${MODIFY}:genproto \
+	event/event.proto
 
 .PHONY: build
 build: proto
