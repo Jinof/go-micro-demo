@@ -43,6 +43,11 @@ Run the api layer
 # Call the service
 
     // curl -H 'Content-Type: application/json' -H 'Authorization: Bearer Token' -d '{"name": "John"}' http://localhost:8080/user/call
-    curl -H 'Content-Type: application/json' -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsImV4cCI6MTYwMDQ0MDU0MiwiaWF0IjoxNjAwNDMwNTQyLCJ0eXAiOiJKV1QifQ.eyJpZCI6MTIzNDU2LCJ1c2VybmFtZSI6Ikppbm9mIiwieGgiOiJKaW5vZiJ9.Gv2DjRTjoyOcPr26SgKQkKfbxS5UAgbhWlAnvC7TGRI' -d '{"name": "John"}' http://localhost:8080/user/call
+    curl -H 'Content-Type: application/json' -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsImV4cCI6MTYwMDQ0MDU0MiwiaWF0IjoxNjAwNDMwNTQyLCJ0eXAiOiJKV1QifQ.eyJpZCI6MTIzNDU2LCJ1c2VybmFtZSI6Ikppbm9mIiwieGgiOiJKaW5vZiJ9.Gv2DjRTjoyOcPr26SgKQkKfbxS5UAgbhWlAnvC7TGRI' -d '{"name": "John"}' http://localhost:8080/api/user/call
 
     {"status":0,"message":"成功调用User.Call","data":"Hello jinof your data has been received"}
+    
+# Use pub and sub
+
+    curl -H 'Content-Type: application/json' -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsImV4cCI6MTYwMDQ0MDU0MiwiaWF0IjoxNjAwNDMwNTQyLCJ0eXAiOiJKV1QifQ.eyJpZCI6MTIzNDU2LCJ1c2VybmFtZSI6Ikppbm9mIiwieGgiOiJKaW5vZiJ9.Gv2DjRTjoyOcPr26SgKQkKfbxS5UAgbhWlAnvC7TGRI' -d '{"name": "John"}' http://localhost:8080/api/user/pub
+    
