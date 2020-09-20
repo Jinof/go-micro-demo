@@ -4,7 +4,9 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"github.com/Jinof/go-micro-demo/user/genproto/event"
 	srv "github.com/Jinof/go-micro-demo/user/genproto/srv"
+	"github.com/micro/go-micro/v2"
 	"github.com/micro/go-micro/v2/logger"
 	"time"
 
@@ -18,7 +20,8 @@ import (
 )
 
 type User struct {
-	Client client.Client
+	Client    client.Client
+	Publisher micro.Publisher
 }
 
 // Example.User is a method will be served by http request /example/srv
@@ -85,17 +88,16 @@ func (g *User) Pub(ctx context.Context, req *api.Request, res *api.Response) err
 	username := usernamePair.Values[0]
 	id := time.Now().UnixNano()
 
-	msg := &broker.Message{
-		Header: map[string]string{
-			"id": fmt.Sprintf("#{%d}", id),
-		},
-		Body: []byte(fmt.Sprintf("${%d}: received a message from %s", id, username)),
+	msg := &event.Event{
+		Id:       id,
+		Username: username,
+		Data:     "hello",
 	}
 	logger.Info(broker.String())
-	if err := broker.Publish(pubsub.Topic, msg); err != nil {
-		logger.Info("[pub] message publish failed: %v", err)
+	if err := g.Publisher.Publish(context.Background(), msg); err != nil {
+		logger.Info("[Topic:%s] message publish failed: %v\n", pubsub.Topic, err)
 	} else {
-		fmt.Println("[pub] message publish success: ", string(msg.Body))
+		fmt.Printf("[Topic:%s] message publish success: %s\n", pubsub.Topic, msg.Data)
 	}
 
 	return nil

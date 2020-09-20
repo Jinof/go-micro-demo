@@ -1,3 +1,3 @@
 package pubsub
 
-const Topic = "go.micro.demo.topic.pubsub"
+const Topic = "go.micro.topic.pubsub"

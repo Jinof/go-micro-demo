@@ -2,6 +2,7 @@ package handler
 
 import (
 	user "github.com/Jinof/go-micro-demo/user/genproto/api"
+	"github.com/Jinof/go-micro-demo/user/pkg/pubsub"
 	"github.com/micro/go-micro/v2"
 	mApi "github.com/micro/go-micro/v2/api"
 	hApi "github.com/micro/go-micro/v2/api/handler/api"
@@ -15,7 +16,9 @@ func RegisterHandler(service micro.Service) {
 }
 
 func registerUser(service micro.Service) error {
-	return user.RegisterUserHandler(service.Server(), &User{Client: service.Client()},
+	publisher := micro.NewPublisher(pubsub.Topic, service.Client())
+
+	return user.RegisterUserHandler(service.Server(), &User{Client: service.Client(), Publisher: publisher},
 		mApi.WithEndpoint(&mApi.Endpoint{
 			// The Rpc Method
 			Name: "User.Call",
