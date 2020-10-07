@@ -10,7 +10,6 @@ import (
 	"github.com/micro/go-micro/v2/logger"
 	"time"
 
-	"fmt"
 	"github.com/Jinof/go-micro-demo/user/pkg/pubsub"
 	api "github.com/micro/go-micro/v2/api/proto"
 	"github.com/micro/go-micro/v2/broker"
@@ -31,7 +30,7 @@ func (g *User) Call(ctx context.Context, req *api.Request, res *api.Response) er
 	if !ok {
 		log.Println("err: cannot get username in header")
 	}
-	fmt.Printf("internal %s send a call \n", usernamePair.Values)
+	logger.Infof("internal %s send a call \n", usernamePair.Values)
 
 	data := new(struct {
 		Data string `json:"data"`
@@ -43,14 +42,12 @@ func (g *User) Call(ctx context.Context, req *api.Request, res *api.Response) er
 		return merr.InternalServerError("api.greeter.call", err.Error())
 	}
 
-	fmt.Println("From grpc", rsp)
+	logger.Info("From grpc", rsp)
 
-	b, err := ResponseBody(0, "成功调用User.Call", rsp.Msg)
+	res.Body, err = ResponseBody(0, "成功调用User.Call", rsp.Msg)
 	if err != nil {
 		return merr.InternalServerError("api.greeter.call", err.Error())
 	}
-
-	res.Body = b
 
 	return nil
 }
@@ -95,9 +92,9 @@ func (g *User) Pub(ctx context.Context, req *api.Request, res *api.Response) err
 	}
 	logger.Info(broker.String())
 	if err := g.Publisher.Publish(context.Background(), msg); err != nil {
-		logger.Info("[Topic:%s] message publish failed: %v\n", pubsub.Topic, err)
+		logger.Info("[%s] message publish failed: %v\n", pubsub.Topic, err)
 	} else {
-		fmt.Printf("[Topic:%s] message publish success: %s\n", pubsub.Topic, msg.Data)
+		logger.Infof("[%s] message publish success: %s\n", pubsub.Topic, msg.Data)
 	}
 
 	return nil
