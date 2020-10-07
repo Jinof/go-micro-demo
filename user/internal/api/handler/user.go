@@ -44,12 +44,10 @@ func (g *User) Call(ctx context.Context, req *api.Request, res *api.Response) er
 
 	logger.Info("From grpc", rsp)
 
-	b, err := ResponseBody(0, "成功调用User.Call", rsp.Msg)
+	res.Body, err = ResponseBody(0, "成功调用User.Call", rsp.Msg)
 	if err != nil {
 		return merr.InternalServerError("api.greeter.call", err.Error())
 	}
-
-	res.Body = b
 
 	return nil
 }
