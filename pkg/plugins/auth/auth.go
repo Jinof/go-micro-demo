@@ -17,6 +17,7 @@ import (
 	"github.com/micro/micro/v2/plugin"
 )
 
+// Auth def
 type Auth struct {
 	secret       string
 	enforcer     *casbin.Enforcer
