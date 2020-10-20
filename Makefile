@@ -26,4 +26,8 @@ build_api:
 build_srv:
 	cd user/cmd/srv && make build
 
-.PHONY: run_srv run_api run_gateway run_gateway_without_casbin build_gateway build_api build_srv
+build_user:
+	cd user/cmd/api && make build
+	cd user/cmd/srv && make build
+
+.PHONY: run_srv run_api run_gateway run_gateway_without_casbin build_gateway build_api build_srv build_user
