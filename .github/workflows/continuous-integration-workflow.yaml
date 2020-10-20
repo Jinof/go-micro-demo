@@ -36,5 +36,6 @@ jobs:
 
           cat projects
           while read project; do
+            echo build_$project
             make build_$project
           done < projects
