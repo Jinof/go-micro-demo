@@ -30,5 +30,13 @@ jobs:
               dep ensure
           fi
 
+      - name: Get Modified Directories
+        run: |
+          git diff --no-commit-id --name-only -r `git log -n 2 --oneline --pretty=format:"%h" | tail -n1` | grep "^[^LICENSE|Makefile|README.md|.gitignore]"| cut -d/ -f1 | sort -u > projects
+
       - name: Build
-        run: make build_gateway
+        run: |
+          while read project
+          do
+            make build_$project
+          done < projects
