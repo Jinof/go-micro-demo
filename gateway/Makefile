@@ -4,7 +4,7 @@ IMAGE_TAG=${tag}
 IMAGE_NAME=jinof/go-micro-demo-$(NAME)
 
 build:
-	CGO_ENABLED=0 go build -installsuffix cgo -o $(NAME) *.go
+	CGO_ENABLED=0 go build -installsuffix cgo -o $(NAME).sh *.go
 
 docker:
 	docker build -t $(IMAGE_NAME):$(IMAGE_TAG) .

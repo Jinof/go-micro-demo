@@ -6,6 +6,7 @@ import (
 	log "github.com/micro/go-micro/v2/logger"
 )
 
+// Event def
 type Event struct {
 }
 

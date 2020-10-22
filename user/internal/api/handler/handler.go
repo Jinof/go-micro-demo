@@ -9,6 +9,7 @@ import (
 	"github.com/micro/go-micro/v2/util/log"
 )
 
+// RegisterHandler register handler of user api
 func RegisterHandler(service micro.Service) {
 	if err := registerUser(service); err != nil {
 		log.Error(err)
