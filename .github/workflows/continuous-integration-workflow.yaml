@@ -33,8 +33,8 @@ jobs:
       - name: Build
         run: |
           git status
+          git diff --no-commit-id --name-only -r `git log -n 2 --oneline --pretty=format:"%h" | tail -n1` | cut -d/ -f1  | sort -u
           git diff --no-commit-id --name-only -r `git log -n 2 --oneline --pretty=format:"%h" | tail -n1` | cut -d/ -f1  | sort -u > projects
-          cat projects
           while read project; do
             echo build_$project
             make build_$project
