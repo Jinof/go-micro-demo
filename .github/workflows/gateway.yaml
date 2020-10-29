@@ -1,15 +1,18 @@
-name: Go
+name: gateway
 
 on:
   push:
     branches: [ master ]
+    path:
+      - 'gateway/*'
+      - '**.go'
   pull_request:
     branches: [ master ]
 
 jobs:
 
   build:
-    name: Build
+    name: Build Gateway
     runs-on: ubuntu-latest
     steps:
 
@@ -32,10 +35,4 @@ jobs:
 
       - name: Build
         run: |
-          git diff --no-commit-id --name-only -r `git log -n 2 --oneline --pretty=format:"%h" | tail -n1` | cut -d/ -f1 | grep -v "LICENSE\|Makefile\|README\.md\|\.gitignore\|pkg\|go\.mod\|go\.sum" | sort -u > projects
-
-          cat projects
-          while read project; do
-            echo build_$project
-            make build_$project
-          done < projects
+          make build_gateway
