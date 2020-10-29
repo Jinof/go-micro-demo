@@ -10,8 +10,14 @@ jobs:
 
   build:
     name: Build
-    runs-on: [go-micro-demo]
+    runs-on: ubuntu-latest
     steps:
+
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v2
+        with:
+          go-version: ^1.13
+        id: go
 
       - name: Check out code into the Go module directory
         uses: actions/checkout@v2
@@ -26,7 +32,9 @@ jobs:
 
       - name: Build
         run: |
-          git diff --no-commit-id --name-only -r `git log -n 2 --oneline --pretty=format:"%h" | tail -n1` | cut -d/ -f1  | sort -u > projects
+          git diff --no-commit-id --name-only -r `git log -n 2 --oneline --pretty=format:"%h" | tail -n1` | cut -d/ -f1 | grep -v "LICENSE\|Makefile\|README\.md\|\.gitignore\|pkg\|go\.mod\|go\.sum" | sort -u > projects
+
+          cat projects
           while read project; do
             echo build_$project
             make build_$project
