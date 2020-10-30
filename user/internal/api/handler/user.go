@@ -23,7 +23,7 @@ type User struct {
 	Publisher micro.Publisher
 }
 
-// Example.User is a method will be served by http request /example/srv
+// Call
 func (g *User) Call(ctx context.Context, req *api.Request, res *api.Response) error {
 	// 请注意这里，req.Header内部默认key为大写
 	usernamePair, ok := req.Header["Username"]
@@ -52,6 +52,7 @@ func (g *User) Call(ctx context.Context, req *api.Request, res *api.Response) er
 	return nil
 }
 
+// Hello is the hello world fucntion
 func (g *User) Hello(ctx context.Context, req *api.Request, res *api.Response) error {
 	usernamePair, ok := req.Header["Username"]
 	if !ok {
@@ -77,6 +78,7 @@ func (g *User) Hello(ctx context.Context, req *api.Request, res *api.Response) e
 	return nil
 }
 
+// Pub is a function pub message .
 func (g *User) Pub(ctx context.Context, req *api.Request, res *api.Response) error {
 	usernamePair, ok := req.Header["Username"]
 	if !ok {
