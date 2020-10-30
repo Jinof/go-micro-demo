@@ -8,6 +8,7 @@ on:
       - '**.go'
   pull_request:
     branches: [ master ]
+    path:
       - 'user/*'
       - '**.go'
 

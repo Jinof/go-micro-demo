@@ -8,6 +8,9 @@ on:
       - '**.go'
   pull_request:
     branches: [ master ]
+    path:
+      - 'gateway/*'
+      - '**.go'
 
 jobs:
 
