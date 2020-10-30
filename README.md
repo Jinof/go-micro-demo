@@ -14,7 +14,7 @@
 srv为rpc服务, 通过api层抽象出接口, 再用gateway转发请求.    
 
 优点:
-1. gateway 实际为 micro api, 具有micro原生的服务发现的能力, 可自行调用 api.
+1. gateway 实际为 micro api, 具有micro原生的服务发现的能力.
 1. 服务扩展时只需拓展api和srv层, gateway无需更改.
     
 gateway的auth通过api plugin实现, 并使用了 casbin 做鉴权.
