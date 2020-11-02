@@ -4,12 +4,12 @@ on:
   push:
     branches: [ master ]
     path:
-      - 'user/*'
+      - 'user/**'
       - '**.go'
   pull_request:
     branches: [ master ]
     path:
-      - 'user/*'
+      - 'user/**'
       - '**.go'
 
 jobs:

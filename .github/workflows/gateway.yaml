@@ -4,7 +4,7 @@ on:
   push:
     branches: [ master ]
     path:
-      - 'gateway/*'
+      - 'gateway/**'
       - '**.go'
   pull_request:
     branches: [ master ]
