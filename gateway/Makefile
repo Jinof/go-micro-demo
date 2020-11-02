@@ -29,5 +29,4 @@ run_without_casbin:
 	--namespace=${namespace} \
 	--casbin_init_skip=true
 
-
 .PHONY: build docker push run run_without_casbin
