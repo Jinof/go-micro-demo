@@ -3,11 +3,11 @@ name: gateway
 on:
   push:
     branches: [ master ]
-    path:
+    paths:
       - 'gateway/**'
   pull_request:
     branches: [ master ]
-    path:
+    paths:
       - 'gateway/*'
 
 jobs:

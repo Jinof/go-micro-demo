@@ -3,11 +3,11 @@ name: user
 on:
   push:
     branches: [ master ]
-    path:
+    paths:
       - 'user/**'
   pull_request:
     branches: [ master ]
-    path:
+    paths:
       - 'user/**'
 
 jobs:
