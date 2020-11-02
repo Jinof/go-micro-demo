@@ -5,10 +5,20 @@ on:
     branches: [ master ]
     paths:
       - 'user/**'
+      - 'pkg'
+      - '!**.md'
+      - '!**.conf'
+      - '!**.csv'
+      - '!**/Makefile'
   pull_request:
     branches: [ master ]
     paths:
       - 'user/**'
+      - 'pkg'
+      - '!**.md'
+      - '!**.conf'
+      - '!**.csv'
+      - '!**/Makefile'
 
 jobs:
 

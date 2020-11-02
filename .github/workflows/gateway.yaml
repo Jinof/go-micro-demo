@@ -5,10 +5,20 @@ on:
     branches: [ master ]
     paths:
       - 'gateway/**'
+      - 'pkg'
+      - '!**.md'
+      - '!**.conf'
+      - '!**.csv'
+      - '!**/Makefile'
   pull_request:
     branches: [ master ]
     paths:
-      - 'gateway/*'
+      - 'gateway/**'
+      - 'pkg'
+      - '!**.md'
+      - '!**.conf'
+      - '!**.csv'
+      - '!**/Makefile'
 
 jobs:
 
