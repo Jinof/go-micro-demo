@@ -5,12 +5,10 @@ on:
     branches: [ master ]
     path:
       - 'gateway/**'
-      - '**.go'
   pull_request:
     branches: [ master ]
     path:
       - 'gateway/*'
-      - '**.go'
 
 jobs:
 
