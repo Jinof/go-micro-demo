@@ -8,6 +8,8 @@ import (
 	"github.com/micro/go-micro/v2"
 	"github.com/micro/go-micro/v2/broker"
 	log "github.com/micro/go-micro/v2/logger"
+	ocPlugin "github.com/micro/go-plugins/wrapper/trace/opentracing/v2"
+	oc "github.com/opentracing/opentracing-go"
 )
 
 func main() {
@@ -15,6 +17,7 @@ func main() {
 	service := micro.NewService(
 		micro.Name("go.micro.service.srv"),
 		micro.Version("latest"),
+		micro.WrapHandler(ocPlugin.NewHandlerWrapper(oc.GlobalTracer())),
 	)
 
 	// Initialise service
